@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:freebies_ecommerce/controllers/db/online/diohelper.dart';
 import 'package:freebies_ecommerce/views/bottom_navigator_screen.dart';
 
-void main() {
+void main()async {
+  WidgetsFlutterBinding.ensureInitialized();
+  DioHelper.initdio();
   runApp(const MyApp());
 }
 
