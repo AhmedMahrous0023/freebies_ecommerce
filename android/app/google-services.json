@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "486674163462",
+    "project_id": "freebies-ecommerce",
+    "storage_bucket": "freebies-ecommerce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:486674163462:android:dfe3ef608fac9403192087",
+        "android_client_info": {
+          "package_name": "com.example.freebies_ecommerce"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3gS9mgX3fAZ3p2rLefrnCI3rk1YqgKF8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

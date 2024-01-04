@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:freebies_ecommerce/controllers/db/online/diohelper.dart';
 import 'package:freebies_ecommerce/models/category_model.dart';
@@ -17,6 +19,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String? url;
+
+  Map<String, dynamic>? newNews;
+
+  Future<void> getData() async {
+    var data = await FirebaseFirestore.instance
+        .collection('news')
+        .doc('VTMjodvUXNCPzcj2WtHy')
+        .get();
+    newNews = data.data();
+    var newlist = newNews!.values.toList();
+    print(newNews);
+  }
+
   TextEditingController _searchcontroller = TextEditingController();
   List<CategoryModel> categories = [];
   CategoryModel? categoriesSingle;
@@ -93,6 +109,22 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<String> getImageUrl(String fileName) async {
+  try {
+    Reference storageReference = FirebaseStorage.instance.ref().child('images/$fileName');
+    String downloadURL = await storageReference.getDownloadURL();
+     print(downloadURL);
+    print("marihaaaaaaaaaaaaaaaaaaaaaaaaaaaaannnnnnnnnn");
+    url =downloadURL ;
+    return url!;
+   
+  } catch (e) {
+    print('Error getting image URL: $e');
+    return 'null';
+  }
+}
+
+
   @override
   void initState() {
     super.initState();
@@ -104,6 +136,8 @@ class _HomeScreenState extends State<HomeScreen> {
     await getProductFilteredCatag();
     await getOneCategory();
     await getSecondCategory();
+    await getData();
+    await getImageUrl('24701-nature-natural-beauty.jpg');
   }
 
   @override
@@ -312,9 +346,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   Padding(
                     padding: const EdgeInsets.only(right: 20),
                     child: InkWell(
-                      onTap: (){
-                                                                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewProductsOne(name: "${categoriesSingle!.name}",)));
-
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ViewProductsOne(
+                                  name: "${categoriesSingle!.name}",
+                                )));
                       },
                       child: Text(
                         "See All",
@@ -351,10 +387,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                           )));
                                 },
                                 child: ProductViewItem(
-                                    imagenetworkproduct:
-                                        sectionOne.first.images!.isNotEmpty
-                                            ? "${sectionOne[index].images![0]}"
-                                            : "no image",
+                                    imagenetworkproduct: sectionOne
+                                            .first.images!.isNotEmpty
+                                        ? "${sectionOne[index].images![0]}"
+                                        : "https://cityofmebanenc.gov/parks-facilities-trails/placeholder-image/",
                                     producttitle: "${sectionOne[index].title}",
                                     productPrice:
                                         "Price :${sectionOne[index].price} \$",
@@ -406,8 +442,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   Padding(
                     padding: const EdgeInsets.only(right: 20),
                     child: InkWell(
-                      onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewProductsTwo(name: "${categoriesSecond!.name}",)));
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ViewProductsTwo(
+                                  name: "${categoriesSecond!.name}",
+                                )));
                       },
                       child: Text(
                         "See All",
@@ -445,7 +484,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                         child: ProductViewItem(
                             imagenetworkproduct:
-                                "${sectionOne[index].images![index]}",
+                                "${sectionOne[index].images![0]}" ??
+                                    "https://cityofmebanenc.gov/parks-facilities-trails/placeholder-image/",
                             producttitle: "${sectionOne[index].title}",
                             productPrice:
                                 "Price :${sectionOne[index].price} \$",
@@ -456,6 +496,36 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Text("No Data Try Later");
                 }),
           ),
+         Padding(
+           padding: const EdgeInsets.all(15.0),
+           child: Text("Latest News",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
+         ),
+          newNews != null
+              ? Card(
+                child: ListTile(
+                    title: Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: Text("${newNews!['title']}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),),
+                    ),
+                    subtitle: Column(
+                      children: [
+                        Padding(
+                      padding: const EdgeInsets.only(top: 20,right: 130),
+                          child: Text("${newNews!['subtitle']}",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400),),
+                        ),
+                                                  Padding(
+                      padding: const EdgeInsets.only(top: 10,right: 130),
+                                                    child: Text("${newNews!['date']}",style: TextStyle(fontSize: 14,color: Colors.grey, fontWeight: FontWeight.w400),),
+                                                  ),
+                                                 
+                    
+                    
+                      ],
+                    ),
+                    trailing:  Image.network("$url"),
+                  ),
+              )
+              : Text("nothing")
         ],
       ),
     );

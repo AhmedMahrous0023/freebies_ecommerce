@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:freebies_ecommerce/controllers/db/online/diohelper.dart';
 import 'package:freebies_ecommerce/models/product_details_model.dart';
+import 'package:freebies_ecommerce/models/product_model_filterbycategory.dart';
+import 'package:freebies_ecommerce/views/wish_list.dart';
+import 'package:hive/hive.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
 class ViewProductDetails extends StatefulWidget {
@@ -15,6 +18,8 @@ class ViewProductDetails extends StatefulWidget {
 }
 
 class _ViewProductDetailsState extends State<ViewProductDetails> {
+    bool isAdedd =false ;
+
   ProductDetailsModel? productDetails;
   getproductDetails() async {
     try {
@@ -29,6 +34,15 @@ class _ViewProductDetailsState extends State<ViewProductDetails> {
       return null;
     }
   }
+
+ Future<void> addToWishlist(ProductDetailsModel productDetails) async {
+  WishList.wishsList.add(productDetails);
+
+  
+}
+
+
+
 
   @override
   void initState() {
@@ -54,7 +68,7 @@ class _ViewProductDetailsState extends State<ViewProductDetails> {
       body: SingleChildScrollView(
         child: Container(
           color: Colors.white,
-          height: MediaQuery.of(context).size.height * 2,
+          height: MediaQuery.of(context).size.height * 2.3,
           child: Stack(
             children: [
               Positioned(
@@ -125,7 +139,7 @@ class _ViewProductDetailsState extends State<ViewProductDetails> {
                                             ),
                                           )),
                                 Card(
-                                    child: productDetails == null
+                                    child: productDetails == null 
                                         ? Center(
                                             child: CircularProgressIndicator())
                                         : Image.network(
@@ -627,11 +641,16 @@ class _ViewProductDetailsState extends State<ViewProductDetails> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         ElevatedButton.icon(
-                                            onPressed: () {},
-                                            label: Text("Added"),
-                                            icon: Icon(Icons.favorite),
+                                            onPressed: () {
+                                              addToWishlist(productDetails!);
+                                              setState(() {
+                                                isAdedd=!isAdedd;
+                                              });
+                                            },
+                                            label:isAdedd?Text("Added Done"): Text("Added"),
+                                            icon:isAdedd? Icon(Icons.favorite,color: Colors.red,):Icon(Icons.favorite),
                                             style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.red,
+                                                backgroundColor: isAdedd?Colors.green: Colors.red,
                                                 foregroundColor: Colors.white,
                                                 fixedSize: Size(160, 50),
                                                 shape: RoundedRectangleBorder(

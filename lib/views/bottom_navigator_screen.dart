@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freebies_ecommerce/views/home_screen.dart';
+import 'package:freebies_ecommerce/views/wish_list_screen.dart';
 
 class BottomNavigatorScreen extends StatefulWidget {
   const BottomNavigatorScreen({super.key});
@@ -11,7 +12,7 @@ class BottomNavigatorScreen extends StatefulWidget {
 class _BottomNavigatorScreenState extends State<BottomNavigatorScreen> {
   List<Widget> _pages = [
     HomeScreen(),
-    HomeScreen(),
+    WishListScreen(),
     HomeScreen(),
     HomeScreen(),
   ];
