@@ -18,8 +18,9 @@ class ViewProductDetails extends StatefulWidget {
 }
 
 class _ViewProductDetailsState extends State<ViewProductDetails> {
-    bool isAdedd =false ;
-
+  bool isAdedd = false;
+  bool isclicked = false;
+  bool confirmAddCart = false ;
   ProductDetailsModel? productDetails;
   getproductDetails() async {
     try {
@@ -35,14 +36,210 @@ class _ViewProductDetailsState extends State<ViewProductDetails> {
     }
   }
 
- Future<void> addToWishlist(ProductDetailsModel productDetails) async {
-  WishList.wishsList.add(productDetails);
+  Future<void> addToWishlist(ProductDetailsModel productDetails) async {
+    WishList.wishsList.add(productDetails);
+  }
 
-  
-}
+  _addToCart() {
 
+   
+    showDialog(context: context, builder: (context)=>Padding(
+      padding: const EdgeInsets.all(30.0),
+      child:  Padding(
+ padding: const EdgeInsets.all(25.0),
+         child: SizedBox(
+                                              height: 600,
+                                              width: 400,
+                                              child: Card(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 20,
+                                                                  top: 10),
+                                                          child: Text(
+                                                            "Add to Cart",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 16),
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  right: 20),
+                                                          child:
+                                                          IconButton(onPressed: (){
+                                                           Navigator.of(context).pop();
+                                                          }, icon:  Icon(Icons.clear),),
+                                                             
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Divider(
+                                                        thickness: 0.25,
+                                                        color: Colors.grey),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 20, top: 10),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            "Quantity",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 15),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 100,
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceEvenly,
+                                                              children: [
+                                                                Icon(
+                                                                    Icons.remove),
+                                                                Text(
+                                                                  "$number",
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      fontSize:
+                                                                          16),
+                                                                ),
+                                                                Icon(
+                                                                  Icons.add,
+                                                                  color:
+                                                                      Colors.blue,
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Divider(
+                                                        thickness: 0.25,
+                                                        color: Colors.grey),
+                                                    Padding(
+         padding:
+                                                          const EdgeInsets.only(
+                                                              left: 20, top: 10),                                                    child: Text("Variant",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 15),),
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(top: 15,bottom: 15),
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                        children: [
+                                                          Container(
+                                                            width: 80,
+                                                            child: Card(shape: BeveledRectangleBorder(),
+                                                              child: Center(child: Text("Black")),
+                                                            ),
+                                                          ),
+                                                          Container(width: 80,
+                                                            child: Card(shape: BeveledRectangleBorder(),
+                                                              child: Center(child: Text("White")),
+                                                            ),
+                                                          ),
+                                                          Container(width: 80,
+                                                            child: Card(shape: BeveledRectangleBorder(),
+                                                              child: Center(child: Text("Blue")),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Divider(
+                                                        thickness: 0.25,
+                                                        color: Colors.grey),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(left: 20,top: 15,bottom: 15),
+                                                      child: Text("Total Belanja",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,color: Colors.blueGrey[300],
+                                                                  fontSize: 15),),
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(left: 20,top: 15,bottom: 15),
+                                                      child: Text("Price \$ ${productDetails!.price!*number}",style: TextStyle(fontWeight: FontWeight.w700,color: Colors.red),),
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(left: 20,top: 15,bottom: 15),
+                                                      child: Center(
+                                                        child: ElevatedButton.icon(
+                                                            onPressed: () {setState(() {
+                                                              confirmAddCart=!confirmAddCart ;
+                                                            });
+                                                             
+                                                                                                                            
+                                                                                                                           
+        
+                                                             
+                                                               print("///////////////////////////////$confirmAddCart");
+                                                            },
+                                                            label:
+                                                            
+                                                                Text("Add To Cart"),
+                                                            icon: Icon(confirmAddCart?Icons.add_shopping_cart:Icons
+                                                                .shopping_cart_outlined),
+                                                            style: ElevatedButton.styleFrom(
+                                                                backgroundColor:confirmAddCart?Colors.green:
+                                                                    Colors
+                                                                        .blue[400],
+                                                                foregroundColor:
+                                                                    Colors.white,
+                                                                fixedSize:
+                                                                    Size(160, 50),
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                                15)))),
+                                                      ),
+                                                    ),
+                                                    Scaffold(
+                                                      bottomSheet: SnackBar(content:confirmAddCart? Text("Added Done Successfuly"):Text("")),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+      )
+                                        ),
+    );
+    setState(() {
+      confirmAddCart=!confirmAddCart;
+    });
+  }
 
-
+  int number = 1;
 
   @override
   void initState() {
@@ -68,7 +265,7 @@ class _ViewProductDetailsState extends State<ViewProductDetails> {
       body: SingleChildScrollView(
         child: Container(
           color: Colors.white,
-          height: MediaQuery.of(context).size.height * 2.3,
+          height: MediaQuery.of(context).size.height * 2.7,
           child: Stack(
             children: [
               Positioned(
@@ -139,7 +336,7 @@ class _ViewProductDetailsState extends State<ViewProductDetails> {
                                             ),
                                           )),
                                 Card(
-                                    child: productDetails == null 
+                                    child: productDetails == null
                                         ? Center(
                                             child: CircularProgressIndicator())
                                         : Image.network(
@@ -569,7 +766,7 @@ class _ViewProductDetailsState extends State<ViewProductDetails> {
                                                           const EdgeInsets.only(
                                                               left: 20),
                                                       child: Text(
-                                                              "2 Bulan yang lalu",
+                                                        "2 Bulan yang lalu",
                                                         style: TextStyle(
                                                           fontSize: 12,
                                                           color: Colors
@@ -634,46 +831,67 @@ class _ViewProductDetailsState extends State<ViewProductDetails> {
                                         onPressed: () {},
                                         child: Text("See All Review")),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(25.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        ElevatedButton.icon(
-                                            onPressed: () {
-                                              addToWishlist(productDetails!);
-                                              setState(() {
-                                                isAdedd=!isAdedd;
-                                              });
-                                            },
-                                            label:isAdedd?Text("Added Done"): Text("Added"),
-                                            icon:isAdedd? Icon(Icons.favorite,color: Colors.red,):Icon(Icons.favorite),
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor: isAdedd?Colors.green: Colors.red,
-                                                foregroundColor: Colors.white,
-                                                fixedSize: Size(160, 50),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15)))),
-                                        ElevatedButton.icon(
-                                            onPressed: () {},
-                                            label: Text("Add To Cart"),
-                                            icon: Icon(
-                                                Icons.shopping_cart_outlined),
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.blue[400],
-                                                foregroundColor: Colors.white,
-                                                fixedSize: Size(160, 50),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15)))),
-                                      ],
-                                    ),
-                                  )
+                                 
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              ElevatedButton.icon(
+                                                  onPressed: () {
+                                                    addToWishlist(
+                                                        productDetails!);
+                                                    setState(() {
+                                                      isAdedd = !isAdedd;
+                                                    });
+                                                  },
+                                                  label: isAdedd
+                                                      ? Text("Added Done")
+                                                      : Text("Added"),
+                                                  icon: isAdedd
+                                                      ? Icon(
+                                                          Icons.favorite,
+                                                          color: Colors.red,
+                                                        )
+                                                      : Icon(Icons.favorite),
+                                                  style: ElevatedButton.styleFrom(
+                                                      backgroundColor: isAdedd
+                                                          ? Colors.green
+                                                          : Colors.red,
+                                                      foregroundColor:
+                                                          Colors.white,
+                                                      fixedSize: Size(160, 50),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15)))),
+                                              ElevatedButton.icon(
+                                                onLongPress: (){
+ _addToCart();
+                                                },
+                                                  onPressed: () {
+                                                   
+                                                 
+                                                  },
+                                                  label: Text(confirmAddCart?"Added":"Add To Cart"),
+                                                  icon: Icon(confirmAddCart? Icons 
+                                                      .add_shopping_cart:Icons.shopping_cart_outlined ,color:confirmAddCart? Colors.green:Colors.blue),
+                                                  style: ElevatedButton.styleFrom(
+                                                      backgroundColor:confirmAddCart? Colors
+                                                          .lightGreen:Colors.indigo[200],
+                                                      foregroundColor:
+                                                          Colors.white,
+                                                      fixedSize: Size(160, 50),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15)))),
+                                            ],
+                                          ),
+                                  
                                 ],
                               );
                             } else {

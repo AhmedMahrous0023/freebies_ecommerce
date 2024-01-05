@@ -6,6 +6,9 @@ import 'package:freebies_ecommerce/models/category_model.dart';
 import 'package:freebies_ecommerce/models/product_model_filterbycategory.dart';
 import 'package:freebies_ecommerce/views/categoriesview.dart';
 import 'package:freebies_ecommerce/views/components/product_view_item.dart';
+import 'package:freebies_ecommerce/views/first_news_view.dart';
+import 'package:freebies_ecommerce/views/second_news_view.dart';
+import 'package:freebies_ecommerce/views/third_news_view.dart';
 import 'package:freebies_ecommerce/views/view_product_details.dart';
 import 'package:freebies_ecommerce/views/view_product_one_screen.dart';
 import 'package:freebies_ecommerce/views/view_products_two_screen.dart';
@@ -19,18 +22,39 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String? url;
+  String? urlOne;
+  String? urlTwo;
+  String? urlThree;
 
-  Map<String, dynamic>? newNews;
+  Map<String, dynamic>? newNewsFirst;
+  Map<String, dynamic>? newNewsSecond;
+  Map<String, dynamic>? newNewsThird;
 
-  Future<void> getData() async {
+  Future getDataFirstDoc() async {
     var data = await FirebaseFirestore.instance
         .collection('news')
         .doc('VTMjodvUXNCPzcj2WtHy')
         .get();
-    newNews = data.data();
-    var newlist = newNews!.values.toList();
-    print(newNews);
+    newNewsFirst = data.data();
+    return newNewsFirst;
+  }
+
+  Future getDataSecondDoc() async {
+    var data = await FirebaseFirestore.instance
+        .collection('news')
+        .doc('Z6YUPPPAk2FLIDAeN2kE')
+        .get();
+    newNewsSecond = data.data();
+    return newNewsSecond;
+  }
+
+  Future getDataThirdDoc() async {
+    var data = await FirebaseFirestore.instance
+        .collection('news')
+        .doc('qIUNyotza9KB0nLcxtn7')
+        .get();
+    newNewsThird = data.data();
+    return newNewsThird;
   }
 
   TextEditingController _searchcontroller = TextEditingController();
@@ -110,20 +134,46 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<String> getImageUrl(String fileName) async {
-  try {
-    Reference storageReference = FirebaseStorage.instance.ref().child('images/$fileName');
-    String downloadURL = await storageReference.getDownloadURL();
-     print(downloadURL);
-    print("marihaaaaaaaaaaaaaaaaaaaaaaaaaaaaannnnnnnnnn");
-    url =downloadURL ;
-    return url!;
-   
-  } catch (e) {
-    print('Error getting image URL: $e');
-    return 'null';
+    try {
+      Reference storageReference =
+          FirebaseStorage.instance.ref().child('images/$fileName');
+      String downloadURL = await storageReference.getDownloadURL();
+      print(downloadURL);
+      urlOne = downloadURL;
+      return urlOne!;
+    } catch (e) {
+      print('Error getting image URL: $e');
+      return 'null';
+    }
   }
-}
 
+  Future<String> getImageUrlTwo(String fileName) async {
+    try {
+      Reference storageReference =
+          FirebaseStorage.instance.ref().child('images/$fileName');
+      String downloadURL = await storageReference.getDownloadURL();
+      print(downloadURL);
+      urlTwo = downloadURL;
+      return urlTwo!;
+    } catch (e) {
+      print('Error getting image URL: $e');
+      return 'null';
+    }
+  }
+
+  Future<String> getImageUrlThird(String fileName) async {
+    try {
+      Reference storageReference =
+          FirebaseStorage.instance.ref().child('images/$fileName');
+      String downloadURL = await storageReference.getDownloadURL();
+      print(downloadURL);
+      urlThree = downloadURL;
+      return urlThree!;
+    } catch (e) {
+      print('Error getting image URL: $e');
+      return 'null';
+    }
+  }
 
   @override
   void initState() {
@@ -136,8 +186,12 @@ class _HomeScreenState extends State<HomeScreen> {
     await getProductFilteredCatag();
     await getOneCategory();
     await getSecondCategory();
-    await getData();
-    await getImageUrl('24701-nature-natural-beauty.jpg');
+    await getDataFirstDoc();
+    await getDataSecondDoc();
+    await getDataThirdDoc();
+    await getImageUrlThird('24701-nature-natural-beauty.jpg');
+    await getImageUrlTwo('image3.jpg');
+    await getImageUrl('aswan.jpg');
   }
 
   @override
@@ -496,38 +550,217 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Text("No Data Try Later");
                 }),
           ),
-         Padding(
-           padding: const EdgeInsets.all(15.0),
-           child: Text("Latest News",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
-         ),
-          newNews != null
-              ? Card(
-                child: ListTile(
-                    title: Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: Text("${newNews!['title']}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),),
-                    ),
-                    subtitle: Column(
-                      children: [
-                        Padding(
-                      padding: const EdgeInsets.only(top: 20,right: 130),
-                          child: Text("${newNews!['subtitle']}",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400),),
-                        ),
-                                                  Padding(
-                      padding: const EdgeInsets.only(top: 10,right: 130),
-                                                    child: Text("${newNews!['date']}",style: TextStyle(fontSize: 14,color: Colors.grey, fontWeight: FontWeight.w400),),
-                                                  ),
-                                                 
-                    
-                    
-                      ],
-                    ),
-                    trailing:  Image.network("$url"),
-                  ),
-              )
-              : Text("nothing")
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Text(
+              "Latest News",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => FirstNewsView()));
+            },
+            child: Container(
+              height: 250,
+              child: FutureBuilder(
+                  future: getDataFirstDoc(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Text("Error:${snapshot.error}");
+                    } else if (!snapshot.hasData || newNewsFirst == null) {
+                      return Text("No Data found");
+                    } else {
+                      return Card(
+                        child: ListTile(
+                            title: Padding(
+                              padding: const EdgeInsets.only(top: 20),
+                              child: Text(
+                                "${newNewsFirst!['title']}",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                            subtitle: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 20, right: 130),
+                                  child: Text(
+                                    "${newNewsFirst!['subtitle']}",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 10, right: 130),
+                                  child: Text(
+                                    "${newNewsFirst!['date']}",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            trailing: urlOne != null
+                                ? Image.network("$urlOne")
+                                : Shimmer(
+                                    duration: Duration(seconds: 4),
+                                    color: Colors.grey,
+                                    direction:
+                                        ShimmerDirection.fromLeftToRight(),
+                                    child: Image.asset(
+                                        "assets/images/Placeholder_view_vector.svg.png"))),
+                      );
+                    }
+                  }),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => SecondNewsView()));
+            },
+            child: Container(
+              height: 250,
+              child: FutureBuilder(
+                  future: getDataSecondDoc(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Text("Error:${snapshot.error}");
+                    } else if (!snapshot.hasData || newNewsFirst == null) {
+                      return Text("No Data found");
+                    } else {
+                      return Card(
+                        child: ListTile(
+                            title: Padding(
+                              padding: const EdgeInsets.only(top: 20),
+                              child: Text(
+                                "${newNewsSecond!['title']}",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                            subtitle: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 20, right: 130),
+                                  child: Text(
+                                    "${newNewsSecond!['subtitle']}",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 10, right: 130),
+                                  child: Text(
+                                    "${newNewsSecond!['date']}",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            trailing: urlTwo != null
+                                ? Image.network("$urlTwo")
+                                : Shimmer(
+                                    duration: Duration(seconds: 4),
+                                    color: Colors.grey,
+                                    direction:
+                                        ShimmerDirection.fromLeftToRight(),
+                                    child: Image.asset(
+                                        "assets/images/Placeholder_view_vector.svg.png"))),
+                      );
+                    }
+                  }),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => ThirdNewsView()));
+            },
+            child: Container(
+              height: 250,
+              child: FutureBuilder(
+                  future: getDataThirdDoc(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Text("Error:${snapshot.error}");
+                    } else if (!snapshot.hasData || newNewsFirst == null) {
+                      return Text("No Data found");
+                    } else {
+                      return Card(
+                        child: ListTile(
+                            title: Padding(
+                              padding: const EdgeInsets.only(top: 20),
+                              child: Text(
+                                "${newNewsThird!['title']}",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                            subtitle: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 20, right: 130),
+                                  child: Text(
+                                    "${newNewsThird!['subtitle']}",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 10, right: 130),
+                                  child: Text(
+                                    "${newNewsThird!['date']}",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            trailing: urlThree != null
+                                ? Image.network("$urlThree")
+                                : Shimmer(
+                                    duration: Duration(seconds: 4),
+                                    color: Colors.grey,
+                                    direction:
+                                        ShimmerDirection.fromLeftToRight(),
+                                    child: Image.asset(
+                                        "assets/images/Placeholder_view_vector.svg.png"))),
+                      );
+                    }
+                  }),
+            ),
+          )
         ],
       ),
     );
   }
 }
+
+
+
+
