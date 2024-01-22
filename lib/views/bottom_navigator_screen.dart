@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freebies_ecommerce/views/home_screen.dart';
+import 'package:freebies_ecommerce/views/login_screens/sign_up_screen.dart';
 import 'package:freebies_ecommerce/views/wish_list_screen.dart';
 
 class BottomNavigatorScreen extends StatefulWidget {
@@ -14,7 +15,7 @@ class _BottomNavigatorScreenState extends State<BottomNavigatorScreen> {
     HomeScreen(),
     WishListScreen(),
     HomeScreen(),
-    HomeScreen(),
+   SignUpScreen(),
   ];
   int _currentindex = 0;
   @override
