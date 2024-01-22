@@ -1,4 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:freebies_ecommerce/controllers/db/online/diohelper.dart';
@@ -8,8 +9,11 @@ import 'firebase_options.dart';
 
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
+    final appDocumentDirectory = await getApplicationDocumentsDirectory();
+await Hive.initFlutter(appDocumentDirectory.path);
+
   DioHelper.initdio();
-  await Hive.initFlutter();
+  
  
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

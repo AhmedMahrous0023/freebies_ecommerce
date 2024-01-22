@@ -68,7 +68,10 @@ class _ViewProductsOneState extends State<ViewProductsOne> {
                   } else if (!snapshot.hasData) {
                     return Text("No Data Found");
                   } else if (snapshot.hasData) {
-                    return ListView.builder(
+                    return GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 1,
+                        mainAxisSpacing: 5),
                       itemCount: sectionOne.length,
                       itemBuilder: (context, index) => InkWell(
                         onTap: () {
@@ -77,7 +80,8 @@ class _ViewProductsOneState extends State<ViewProductsOne> {
                                   productId: sectionOne[index].id)));
                         },
                         child: Flex(direction: Axis.vertical,
-                          children: [Container(height: 400,
+                          children: [Container(height: 350,
+                          width: 200,
                             child: Expanded(flex: 1,
                               child: ProductViewItem(
                                   imagenetworkproduct:sectionOne[index].images![0].isEmpty||sectionOne[index].images![0]==null ?"https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg"

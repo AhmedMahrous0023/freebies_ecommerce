@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -442,9 +443,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 },
                                 child: ProductViewItem(
                                     imagenetworkproduct: sectionOne
-                                            .first.images!.isNotEmpty
+                                            .first.images!.isNotEmpty ||sectionOne
+                                            .first.images!.length>0
                                         ? "${sectionOne[index].images![0]}"
-                                        : "https://cityofmebanenc.gov/parks-facilities-trails/placeholder-image/",
+                                        : "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
                                     producttitle: "${sectionOne[index].title}",
                                     productPrice:
                                         "Price :${sectionOne[index].price} \$",
@@ -537,9 +539,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   productId: sectionOne[index].id)));
                         },
                         child: ProductViewItem(
-                            imagenetworkproduct:
-                                "${sectionOne[index].images![0]}" ??
-                                    "https://cityofmebanenc.gov/parks-facilities-trails/placeholder-image/",
+                            imagenetworkproduct:sectionOne[index].images!.length>0 ?
+                                "${sectionOne[index].images![0]}" :"https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
+                                    
                             producttitle: "${sectionOne[index].title}",
                             productPrice:
                                 "Price :${sectionOne[index].price} \$",

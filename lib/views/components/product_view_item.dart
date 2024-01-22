@@ -25,10 +25,10 @@ class ProductViewItem extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Expanded(
-                      child: Image.network(
-                    imagenetworkproduct!,
+                      child:imagenetworkproduct!=null ||imagenetworkproduct!.isNotEmpty ? Image.network(
+                    imagenetworkproduct!):Image.asset('assets/images/Placeholder_view_vector.svg.png'),
                   )),
-                ),
+                
                 Expanded(
                   child: ListTile(
                     title: Column(

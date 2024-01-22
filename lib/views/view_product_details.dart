@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:freebies_ecommerce/controllers/db/online/diohelper.dart';
 import 'package:freebies_ecommerce/models/product_details_model.dart';
 import 'package:freebies_ecommerce/models/product_model_filterbycategory.dart';
+import 'package:freebies_ecommerce/views/add_to_cart.dart';
 import 'package:freebies_ecommerce/views/wish_list.dart';
 import 'package:hive/hive.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
 class ViewProductDetails extends StatefulWidget {
+  bool? isAddedCart ;
   final int? productId;
   ViewProductDetails({
     super.key,
     this.productId,
+    this.isAddedCart
   });
 
   @override
@@ -20,7 +23,8 @@ class ViewProductDetails extends StatefulWidget {
 class _ViewProductDetailsState extends State<ViewProductDetails> {
   bool isAdedd = false;
   bool isclicked = false;
-  bool confirmAddCart = false ;
+  bool? confirmAddCart ;
+  
   ProductDetailsModel? productDetails;
   getproductDetails() async {
     try {
@@ -40,206 +44,11 @@ class _ViewProductDetailsState extends State<ViewProductDetails> {
     WishList.wishsList.add(productDetails);
   }
 
-  _addToCart() {
+ 
 
-   
-    showDialog(context: context, builder: (context)=>Padding(
-      padding: const EdgeInsets.all(30.0),
-      child:  Padding(
- padding: const EdgeInsets.all(25.0),
-         child: SizedBox(
-                                              height: 600,
-                                              width: 400,
-                                              child: Card(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  left: 20,
-                                                                  top: 10),
-                                                          child: Text(
-                                                            "Add to Cart",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontSize: 16),
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  right: 20),
-                                                          child:
-                                                          IconButton(onPressed: (){
-                                                           Navigator.of(context).pop();
-                                                          }, icon:  Icon(Icons.clear),),
-                                                             
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Divider(
-                                                        thickness: 0.25,
-                                                        color: Colors.grey),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 20, top: 10),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            "Quantity",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                fontSize: 15),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 100,
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceEvenly,
-                                                              children: [
-                                                                Icon(
-                                                                    Icons.remove),
-                                                                Text(
-                                                                  "$number",
-                                                                  style: TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      fontSize:
-                                                                          16),
-                                                                ),
-                                                                Icon(
-                                                                  Icons.add,
-                                                                  color:
-                                                                      Colors.blue,
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Divider(
-                                                        thickness: 0.25,
-                                                        color: Colors.grey),
-                                                    Padding(
-         padding:
-                                                          const EdgeInsets.only(
-                                                              left: 20, top: 10),                                                    child: Text("Variant",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                fontSize: 15),),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(top: 15,bottom: 15),
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                        children: [
-                                                          Container(
-                                                            width: 80,
-                                                            child: Card(shape: BeveledRectangleBorder(),
-                                                              child: Center(child: Text("Black")),
-                                                            ),
-                                                          ),
-                                                          Container(width: 80,
-                                                            child: Card(shape: BeveledRectangleBorder(),
-                                                              child: Center(child: Text("White")),
-                                                            ),
-                                                          ),
-                                                          Container(width: 80,
-                                                            child: Card(shape: BeveledRectangleBorder(),
-                                                              child: Center(child: Text("Blue")),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Divider(
-                                                        thickness: 0.25,
-                                                        color: Colors.grey),
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(left: 20,top: 15,bottom: 15),
-                                                      child: Text("Total Belanja",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,color: Colors.blueGrey[300],
-                                                                  fontSize: 15),),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(left: 20,top: 15,bottom: 15),
-                                                      child: Text("Price \$ ${productDetails!.price!*number}",style: TextStyle(fontWeight: FontWeight.w700,color: Colors.red),),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(left: 20,top: 15,bottom: 15),
-                                                      child: Center(
-                                                        child: ElevatedButton.icon(
-                                                            onPressed: () {setState(() {
-                                                              confirmAddCart=!confirmAddCart ;
-                                                            });
-                                                             
-                                                                                                                            
-                                                                                                                           
-        
-                                                             
-                                                               print("///////////////////////////////$confirmAddCart");
-                                                            },
-                                                            label:
-                                                            
-                                                                Text("Add To Cart"),
-                                                            icon: Icon(confirmAddCart?Icons.add_shopping_cart:Icons
-                                                                .shopping_cart_outlined),
-                                                            style: ElevatedButton.styleFrom(
-                                                                backgroundColor:confirmAddCart?Colors.green:
-                                                                    Colors
-                                                                        .blue[400],
-                                                                foregroundColor:
-                                                                    Colors.white,
-                                                                fixedSize:
-                                                                    Size(160, 50),
-                                                                shape: RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                                15)))),
-                                                      ),
-                                                    ),
-                                                    Scaffold(
-                                                      bottomSheet: SnackBar(content:confirmAddCart? Text("Added Done Successfuly"):Text("")),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-      )
-                                        ),
-    );
-    setState(() {
-      confirmAddCart=!confirmAddCart;
-    });
-  }
+ 
 
-  int number = 1;
+
 
   @override
   void initState() {
@@ -309,7 +118,7 @@ class _ViewProductDetailsState extends State<ViewProductDetails> {
                           } else if (snapshot.hasError) {
                             return Text("Error:${snapshot.error}");
                           } else if (!snapshot.hasData) {
-                            return Text("No Data Found");
+                            return Image.asset('assets/images/Placeholder_view_vector.svg.png');
                           } else if (snapshot.hasData) {
                             return SizedBox(
                               child: PageView(reverse: true, children: [
@@ -320,8 +129,8 @@ class _ViewProductDetailsState extends State<ViewProductDetails> {
                                         : Container(
                                             decoration: BoxDecoration(
                                                 image: DecorationImage(
-                                                    image: NetworkImage(
-                                                        "${productDetails!.images![0]}"))),
+                                                    image:productDetails!.images!.length>0 ||productDetails!.images![0].isEmpty? NetworkImage(
+                                                        "${productDetails!.images![0]}"):NetworkImage("https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"))),
                                             child: Text(
                                               "1/3 Photos",
                                               style: TextStyle(
@@ -336,15 +145,15 @@ class _ViewProductDetailsState extends State<ViewProductDetails> {
                                             ),
                                           )),
                                 Card(
-                                    child: productDetails == null
-                                        ? Center(
-                                            child: CircularProgressIndicator())
+                                    child: productDetails!.images!.length>0||productDetails!.images![1].isEmpty?
+                                         Center(
+                                            child: Image.asset('assets/images/Placeholder_view_vector.svg.png'))
                                         : Image.network(
                                             "${productDetails!.images![1]}")),
                                 Card(
-                                    child: productDetails == null
-                                        ? Center(
-                                            child: CircularProgressIndicator())
+                                    child: productDetails!.images!.length>0||productDetails!.images![2].isEmpty?
+                                         Center(
+                                            child: Image.asset('assets/images/Placeholder_view_vector.svg.png'))
                                         : Image.network(
                                             "${productDetails!.images![2]}")),
                               ]),
@@ -867,19 +676,23 @@ class _ViewProductDetailsState extends State<ViewProductDetails> {
                                                                       .circular(
                                                                           15)))),
                                               ElevatedButton.icon(
-                                                onLongPress: (){
- _addToCart();
-                                                },
                                                   onPressed: () {
-                                                   
-                                                 
-                                                  },
-                                                  label: Text(confirmAddCart?"Added":"Add To Cart"),
-                                                  icon: Icon(confirmAddCart? Icons 
-                                                      .add_shopping_cart:Icons.shopping_cart_outlined ,color:confirmAddCart? Colors.green:Colors.blue),
+    if (productDetails != null) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => AddToCart(
+            price: productDetails!.price!,
+            productId: productDetails!.id,
+            productDetails: productDetails!,
+          ),
+        ),
+      );
+    }
+                            },
+                                                  label: Text(widget.isAddedCart??false?"Added":"Add To Cart"),
+                                                  icon: Icon( Icons.shopping_cart_outlined ,color: Colors.white),
                                                   style: ElevatedButton.styleFrom(
-                                                      backgroundColor:confirmAddCart? Colors
-                                                          .lightGreen:Colors.indigo[200],
+                                                      backgroundColor:widget.isAddedCart??false?Colors.green: Colors.indigo,
                                                       foregroundColor:
                                                           Colors.white,
                                                       fixedSize: Size(160, 50),
